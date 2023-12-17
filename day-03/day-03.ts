@@ -119,79 +119,59 @@ var hasNonzeroLength = (str: string) => {
 var calcGearRatio = (i: number, j: number): number => {
     let adjacentNums: number[] = []
 
+    // checking the line above and below for numbers adjacent to the *
     for (let index of [i - 1, i + 1]) {
-        let numsToCheck = lines[index].slice(Math.max(j - 3, 0), Math.min(j + 4, lineLength - 1))
+        let numsToCheck = lines[index].slice(Math.max(j - 3, 0), Math.min(j + 4, lineLength))
         if (!numsToCheck.charAt(1).match(/[0-9]+/)) {
-            // console.log("before " + numsToCheck)
             numsToCheck = numsToCheck.slice(2)
-            // console.log("after " + numsToCheck)
         } else if (!numsToCheck.charAt(2).match(/[0-9]+/)) {
-            // console.log("here1")
             numsToCheck = numsToCheck.slice(3)
         }
         if (!numsToCheck.charAt(numsToCheck.length - 2).match(/[0-9]+/)) {
-            // console.log("before " + numsToCheck)
             numsToCheck = numsToCheck.slice(0, -2)
-            // console.log("after " + numsToCheck)
         } else if (!numsToCheck.charAt(numsToCheck.length - 3).match(/[0-9]+/)) {
-            // console.log("here2")
             numsToCheck = numsToCheck.slice(0, -3)
         }
         numsToCheck = numsToCheck.split(/[-!$#@%.^&*()_+|~=`{}\[\]:";'<>?,\/]/).filter(hasNonzeroLength)
-        // console.log(numsToCheck)
         for (let num of numsToCheck) {
             adjacentNums.push(parseInt(num))
         }
-        console.log("numsToCheck @index " + index + " = " + numsToCheck)
     }
 
-    // left: if num then step left to find start
+    // checking the current line to the left for numbers adjacent to the *
     let leftNumsToCheck = lines[i].slice(Math.max(j - 3, 0), j)
     if (!leftNumsToCheck.charAt(2).match(/[0-9]+/)) {
         leftNumsToCheck = ""
     } else if (!leftNumsToCheck.charAt(1).match(/[0-9]+/)) {
-        // console.log("before " + numsToCheck)
         leftNumsToCheck = leftNumsToCheck.slice(1, 3)
-        // console.log("after " + numsToCheck)
     }
     leftNumsToCheck = leftNumsToCheck.split(/[-!$#@%.^&*()_+|~=`{}\[\]:";'<>?,\/]/).filter(hasNonzeroLength)
     for (let num of leftNumsToCheck) {
         adjacentNums.push(parseInt(num))
     }
-    console.log("leftNumsToCheck: " + leftNumsToCheck)
 
-    // right: if num then step right to find end
+    // checking the current line to the right for numbers adjacent to the *
     let rightNumsToCheck = lines[i].slice(j + 1, Math.min(Math.min(j + 4, lineLength - 1)))
     if (!rightNumsToCheck.charAt(0).match(/[0-9]+/)) {
         rightNumsToCheck = ""
     } else if (!rightNumsToCheck.charAt(1).match(/[0-9]+/)) {
-        // console.log("before " + numsToCheck)
         rightNumsToCheck = rightNumsToCheck.slice(0, 2)
-        // console.log("after " + numsToCheck)
     }
-    // else if () {
-
-    // }
     rightNumsToCheck = rightNumsToCheck.split(/[-!$#@%.^&*()_+|~=`{}\[\]:";'<>?,\/]/).filter(hasNonzeroLength)
     for (let num of rightNumsToCheck) {
         adjacentNums.push(parseInt(num))
     }
-    console.log("rightNumsToCheck: " + rightNumsToCheck)
-
     
-    // calc product of nums in array
-    console.log(adjacentNums)
-    if (adjacentNums.length != 2) {
-        return 0
-    } else {
+    // if there are exactly 2 adjacent numbers then return their product, else return zero
+    if (adjacentNums.length == 2) {
         return adjacentNums.reduce((a,b) => a*b, 1)
+    } else {
+        return 0
     }
 }
-// calcGearRatio(6,26)
-// console.log(calcGearRatio(4,46))
 
-// let i = 1
-for (let i = 6; i < 9; i++) {
+// main loop
+for (let i = 0; i < numberOfLines; i++) {
     for (let j = 0; j < lineLength; j++) {
         if (lines[i][j] == "*") {
             const charToCheck = [
@@ -206,12 +186,7 @@ for (let i = 6; i < 9; i++) {
             ]
             for (let char of charToCheck) {
                 if (char.match(/[0-9]+/)) {
-                    // console.log("digit found: " + char)
-                    // total2 += calcGearRatio(i,j)
-                    let tempVal = calcGearRatio(i,j)
-                    total2 += tempVal
-                    console.log("ratio = " + tempVal)
-                    console.log("total = " + total2)
+                    total2 += calcGearRatio(i,j)
                     break
                 }
             }
