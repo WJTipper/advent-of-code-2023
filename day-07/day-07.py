@@ -2,13 +2,10 @@ lines = open("input.txt").readlines()
 hands_list = []
 hands_list_to_sort_1 = []
 hands_list_to_sort_2 = []
-joker_list = []
 for i in range(len(lines)):
     hands_list.append(lines[i].split(" ")[0])
     hands_list_to_sort_1.append(lines[i].split(" ")[0])
     hands_list_to_sort_2.append(lines[i].split(" ")[0])
-    if lines[i].split(" ")[0].find("J") >= 0:
-        joker_list.append(lines[i].split(" ")[0])
 
 # *** PUZZLE 1 ***
 cards = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"]
