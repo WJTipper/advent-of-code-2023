@@ -13,3 +13,4 @@
 - Day 9: Complete
 - Day 10: Part 1 Complete
 - Day 11: Complete
+- Day 13: Part 1 Complete
